@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{195f7011-8678-43c2-850e-e2c3c6b88ea9}</ProjectGuid>
+    <ProjectGuid>{B4C3C278-BC1C-49CD-82BF-76B93EF7F59D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CelesteEngine</RootNamespace>
@@ -35,10 +35,135 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\CelesteEngineData\CelesteEngineData.csproj">
+      <Project>{23e7ff72-2390-404d-b6f6-00b1ef61356d}</Project>
+      <Name>CelesteEngineData</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Animation\AnimatedGameObject.cs" />
+    <Compile Include="Animation\Characters\Character.cs" />
+    <Compile Include="Animation\State.cs" />
+    <Compile Include="Animation\StateMachine.cs" />
+    <Compile Include="Animation\Transition.cs" />
+    <Compile Include="Audio\CustomSoundEffect.cs" />
+    <Compile Include="Camera and Input\Camera.cs" />
+    <Compile Include="Camera and Input\GameKeyboard.cs" />
+    <Compile Include="Camera and Input\GameMouse.cs" />
+    <Compile Include="Camera and Input\InputHandler.cs" />
+    <Compile Include="Colliders\Collider.cs" />
+    <Compile Include="Colliders\RectangleCollider.cs" />
+    <Compile Include="Commands\CallbackCommand.cs" />
+    <Compile Include="Commands\ClickDismissCommand.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\FlashingTextCommand.cs" />
+    <Compile Include="Commands\TextDialogBoxCommand.cs" />
+    <Compile Include="Commands\TextEntryCommand.cs" />
+    <Compile Include="Commands\WaitCommand.cs" />
+    <Compile Include="Commands\WaitForConditionCommand.cs" />
+    <Compile Include="Effects\Lighting\AmbientLight.cs" />
+    <Compile Include="Effects\Lighting\Light.cs" />
+    <Compile Include="Effects\Lighting\PointLight.cs" />
+    <Compile Include="Effects\Particle.cs" />
+    <Compile Include="Effects\ParticleEmitter.cs" />
+    <Compile Include="Interfaces\IAsset.cs" />
+    <Compile Include="Interfaces\IAssetCollection.cs" />
+    <Compile Include="Interfaces\IClickable.cs" />
+    <Compile Include="Interfaces\ICollisionObject.cs" />
+    <Compile Include="Interfaces\IContainer.cs" />
+    <Compile Include="Interfaces\IDamageable.cs" />
+    <Compile Include="Interfaces\IFlashing.cs" />
+    <Compile Include="Interfaces\IModuleCompatible.cs" />
+    <Compile Include="Iterators\BaseObjectIterator.cs" />
+    <Compile Include="Managers\Assets\AssetCollectionManager.cs" />
+    <Compile Include="Managers\Assets\AssetManager.cs" />
+    <Compile Include="Managers\InputManager.cs" />
+    <Compile Include="Managers\Music and SFX\MusicManager.cs" />
+    <Compile Include="Managers\Music and SFX\SFXManager.cs" />
+    <Compile Include="Managers\Objects\CommandManager.cs" />
+    <Compile Include="Managers\Objects\LightManager.cs" />
+    <Compile Include="Managers\Objects\ObjectManager.cs" />
+    <Compile Include="Managers\Objects\ScreenManager.cs" />
+    <Compile Include="Managers\OptionsManager.cs" />
+    <Compile Include="Managers\ThreadManager.cs" />
+    <Compile Include="Modules\Abstract Module Classes\BaseObjectModule.cs" />
+    <Compile Include="Modules\Abstract Module Classes\GameObjectModule.cs" />
+    <Compile Include="Modules\AnimationModule.cs" />
+    <Compile Include="Modules\ClickableObjectModule.cs" />
+    <Compile Include="Modules\DamageableObjectModule.cs" />
+    <Compile Include="Modules\FlashingObjectModule.cs" />
+    <Compile Include="Modules\HighlightOnHoverModule.cs" />
+    <Compile Include="Modules\LifeTimeModule.cs" />
+    <Compile Include="Modules\Module.cs" />
+    <Compile Include="Modules\MoveToDestinationModule.cs" />
+    <Compile Include="Modules\RigidBodyModule.cs" />
+    <Compile Include="Modules\ToolTipModule.cs" />
+    <Compile Include="Objects\BaseObject.cs" />
+    <Compile Include="Objects\Component.cs" />
+    <Compile Include="Objects\GameObject.cs" />
+    <Compile Include="Objects\LevelDesignObject.cs" />
+    <Compile Include="Objects\UIObject.cs" />
+    <Compile Include="Physics\PhysicsBody.cs" />
+    <Compile Include="Physics\PhysicsConstants.cs" />
+    <Compile Include="Procedural Generation\GenerationEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screens\BaseScreen.cs" />
+    <Compile Include="Screens\Gameplay\GameplayScreen.cs" />
+    <Compile Include="Screens\Menus\MenuScreen.cs" />
+    <Compile Include="Screens\Menus\OptionsScreen.cs" />
+    <Compile Include="Screens\Splash Screens\LoadingScreen.cs" />
+    <Compile Include="Screens\Splash Screens\StartupLogoScreen.cs" />
+    <Compile Include="Threading\CustomThread.cs" />
+    <Compile Include="UI\Bar.cs" />
+    <Compile Include="UI\Button.cs" />
+    <Compile Include="UI\ClickableImage.cs" />
+    <Compile Include="UI\FlashingLabel.cs" />
+    <Compile Include="UI\GridControl.cs" />
+    <Compile Include="UI\Image.cs" />
+    <Compile Include="UI\ImageAndLabel.cs" />
+    <Compile Include="UI\InGameEscapeDialog.cs" />
+    <Compile Include="UI\InGameOptionsDialog.cs" />
+    <Compile Include="UI\Label.cs" />
+    <Compile Include="UI\ListControl.cs" />
+    <Compile Include="UI\Logo.cs" />
+    <Compile Include="UI\Slider.cs" />
+    <Compile Include="UI\TabControl.cs" />
+    <Compile Include="UI\TextDialogBox.cs" />
+    <Compile Include="UI\TextEntryBox.cs" />
+    <Compile Include="UI\TextEntryControl.cs" />
+    <Compile Include="UI\UIObjectBox.cs" />
+    <Compile Include="Utils\DebugUtils.cs" />
+    <Compile Include="Utils\MathUtils.cs" />
+    <Compile Include="Xml Data Serializer\XmlDataSerializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Required Content\Data\Screens\LoadingScreen.xml" />
+    <Content Include="Required Content\Data\Screens\MainMenuScreen.xml" />
+    <Content Include="Required Content\Data\Screens\OptionsScreen.xml" />
+    <Content Include="Required Content\Data\Screens\StartupLogoScreen.xml" />
+    <Content Include="Required Content\SFX\UI\ButtonHover.wav" />
+    <Content Include="Required Content\SFX\UI\ButtonPressedSound.wav" />
+    <Content Include="Required Content\Sprites\UI\BarBackground.png" />
+    <Content Include="Required Content\Sprites\UI\BlueSliderDown.png" />
+    <Content Include="Required Content\Sprites\UI\Button.png" />
+    <Content Include="Required Content\Sprites\UI\ButtonHighlighted.png" />
+    <Content Include="Required Content\Sprites\UI\Cursor.png" />
+    <Content Include="Required Content\Sprites\UI\EmptyPanelBackground.png" />
+    <Content Include="Required Content\Sprites\UI\Logo.png" />
+    <Content Include="Required Content\Sprites\UI\Menu.png" />
+    <Content Include="Required Content\Sprites\UI\NarrowButton.png" />
+    <Content Include="Required Content\Sprites\UI\NarrowButtonHighlighted.png" />
+    <Content Include="Required Content\Sprites\UI\SliderBar.png" />
+    <Content Include="Required Content\Sprites\UI\TextEntryBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Required Content\Effects\LightEffect.fx" />
+    <None Include="Required Content\SpriteFonts\DefaultSpriteFont.spritefont" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -48,5 +173,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
 </Project>

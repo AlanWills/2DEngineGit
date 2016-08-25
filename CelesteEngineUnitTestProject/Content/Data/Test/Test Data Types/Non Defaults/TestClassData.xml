@@ -1,0 +1,13 @@
+﻿<XnaContent>
+  <Asset Type="CelesteEngineUnitTestGameProject.TestClassData">
+    <TestFloatData>
+      <TestFloat>10.2</TestFloat>
+    </TestFloatData>
+    <TestBoolData>
+      <TestBool>true</TestBool>
+    </TestBoolData>
+    <TestStringData>
+      <TestString>Test</TestString>
+    </TestStringData>
+  </Asset>
+</XnaContent>

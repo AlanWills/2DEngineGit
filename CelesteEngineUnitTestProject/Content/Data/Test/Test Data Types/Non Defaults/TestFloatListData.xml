@@ -1,0 +1,9 @@
+﻿<XnaContent>
+  <Asset Type="CelesteEngineUnitTestGameProject.TestFloatListData">
+    <TestFloatList>
+      <Item>5</Item>
+      <Item>0</Item>
+      <Item>-5</Item>
+    </TestFloatList>
+  </Asset>
+</XnaContent>

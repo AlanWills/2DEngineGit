@@ -1,0 +1,10 @@
+﻿<XnaContent>
+  <Asset Type="CelesteEngineUnitTestGameProject.TestStringListData">
+    <TestStringList>
+      <Item>This</Item>
+      <Item>is</Item>
+      <Item>a</Item>
+      <Item>test</Item>
+    </TestStringList>
+  </Asset>
+</XnaContent>

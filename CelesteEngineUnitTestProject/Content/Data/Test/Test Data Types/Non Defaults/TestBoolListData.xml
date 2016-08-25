@@ -1,0 +1,10 @@
+﻿<XnaContent>
+  <Asset Type="CelesteEngineUnitTestGameProject.TestBoolListData">
+    <TestBoolList>
+      <Item>true</Item>
+      <Item>true</Item>
+      <Item>false</Item>
+      <Item>false</Item>
+    </TestBoolList>
+  </Asset>
+</XnaContent>
