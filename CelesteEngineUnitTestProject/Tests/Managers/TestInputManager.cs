@@ -2,8 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CelesteEngineUnitTestFramework;
 using System.Diagnostics;
+using Microsoft.Xna.Framework;
 
-namespace SpaceCardGame
+namespace CelesteEngineUnitTestProject
 {
     [TestClass]
     public class TestInputManager : UnitTest
