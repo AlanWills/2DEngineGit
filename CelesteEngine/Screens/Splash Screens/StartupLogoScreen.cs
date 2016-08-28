@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using CelesteEngineData;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CelesteEngine
 {
@@ -71,8 +72,7 @@ namespace CelesteEngine
         {
             base.Begin();
 
-            LoadAllAssetsCallback();
-            TransitionCallback();
+            Task.Run(() => LoadAllAssetsCallback());
         }
 
         #endregion
@@ -87,6 +87,7 @@ namespace CelesteEngine
             DebugUtils.AssertNotNull(content);
             DebugUtils.AssertNotNull(LoadAssets);   // LoadAssets should REALLY PROBABLY not be null, unless we decide to not load ANYTHING
             LoadAssets(content);
+            TransitionCallback();
         }
 
         /// <summary>

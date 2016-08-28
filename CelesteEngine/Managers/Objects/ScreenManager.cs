@@ -190,7 +190,7 @@ namespace CelesteEngine
         /// </summary>
         /// <param name="spriteBatch">The SpriteBatch from our Game1 class</param>
         /// <param name="viewport">The Viewport corresponding to the window</param>
-        public void Setup(Game game, SpriteBatch spriteBatch, GraphicsDeviceManager graphics, IAssetCollection assetCollectionTechnique = null)
+        public void Setup(Game game, SpriteBatch spriteBatch, GraphicsDeviceManager graphics, InputManager inputManager, IAssetCollection assetCollectionTechnique = null)
         {
             // Check that we have called this before loading and initialising
             CheckShouldLoad();
@@ -210,6 +210,7 @@ namespace CelesteEngine
 
             // Set our asset manager impl for cross platform asset loading
             AssetCollectionManager.AssetCollectionTechnique = assetCollectionTechnique;
+            InputManager.Instance = inputManager;
 
             LoadContent();
             Initialise();

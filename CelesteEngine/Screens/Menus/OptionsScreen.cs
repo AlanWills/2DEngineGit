@@ -29,8 +29,8 @@ namespace CelesteEngine
 
         #endregion
 
-        public OptionsScreen(string screenDataAsset = "Screens\\OptionsScreen") :
-            base(screenDataAsset)
+        public OptionsScreen() :
+            base("OptionsScreen")
         {
             
         }

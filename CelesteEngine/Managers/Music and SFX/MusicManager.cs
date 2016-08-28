@@ -11,11 +11,6 @@ namespace CelesteEngine
         #region Properties and Fields
 
         /// <summary>
-        /// A dictionary of songs names to loaded songs.
-        /// </summary>
-        public static Dictionary<string, Song> Songs { private get; set; }
-
-        /// <summary>
         /// The current playlist of songs
         /// </summary>
         private static List<string> currentPlaylist = new List<string>();
@@ -33,8 +28,7 @@ namespace CelesteEngine
             get
             {
                 Debug.Assert(CurrentSongIndex < CurrentPlaylist.Count);
-                Debug.Assert(Songs.ContainsKey(CurrentPlaylist[CurrentSongIndex]));
-                return Songs[CurrentPlaylist[CurrentSongIndex]];
+                return AssetManager.GetMusic(CurrentPlaylist[CurrentSongIndex]);
             }
         }
 

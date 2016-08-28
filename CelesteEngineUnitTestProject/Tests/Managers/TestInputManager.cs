@@ -39,7 +39,7 @@ namespace CelesteEngineUnitTestProject
             Assert.IsTrue(InputManager.Instance.CheckInputEvent("New New Test Event"));
         }
 
-        private bool ReturnTrue()
+        private bool ReturnTrue(params object[] parameters)
         {
             return true;
         }

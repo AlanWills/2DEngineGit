@@ -49,6 +49,7 @@ namespace CelesteEngine
         private float CurrentClickTimer { get; set; }
 
         private const float clickResetTime = 0.05f;
+        private const string AcceleratorPressedEvent = "AcceleratorPressedEvent";
 
         #endregion
 
@@ -59,6 +60,8 @@ namespace CelesteEngine
             ClickState = ClickState.kIdle;
 
             // By default, the accelerators are set to Keys.None so will not be used
+            // Add the accelerator check events to the InputManager
+            InputManager.Instance.AddInputEvent(AcceleratorPressedEvent, IsAcceleratorPressed, InputManager.Empty);
         }
 
         #region Virtual Functions
@@ -86,17 +89,20 @@ namespace CelesteEngine
 
                 // If our corresponding event is null and we have either clicked the appropriate mouse button and we are clicked or have an accelerator key set up which has been pressed, then fire the event
                 if (OnLeftClicked != null &&
-                    ((AttachedBaseObject.Collider.IsClicked && GameMouse.Instance.IsClicked(MouseButton.kLeftButton)) || (GameKeyboard.Instance.IsKeyPressed(LeftClickAccelerator))))
+                   ((AttachedBaseObject.Collider.IsClicked && InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, MouseButton.kLeftButton)) || 
+                    InputManager.Instance.CheckInputEvent(AcceleratorPressedEvent, LeftClickAccelerator)))
                 {
                     OnLeftClicked(AttachedBaseObject);
                 }
                 else if (OnMiddleClicked != null &&
-                    ((AttachedBaseObject.Collider.IsClicked && GameMouse.Instance.IsClicked(MouseButton.kMiddleButton)) || GameKeyboard.Instance.IsKeyPressed(MiddleClickAccelerator)))
+                        ((AttachedBaseObject.Collider.IsClicked && InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, MouseButton.kMiddleButton)) ||
+                        InputManager.Instance.CheckInputEvent(AcceleratorPressedEvent, MiddleClickAccelerator)))
                 {
                     OnMiddleClicked(AttachedBaseObject);
                 }
                 else if (OnRightClicked != null &&
-                    ((AttachedBaseObject.Collider.IsClicked && GameMouse.Instance.IsClicked(MouseButton.kRightButton)) || GameKeyboard.Instance.IsKeyPressed(RightClickAccelerator)))
+                        ((AttachedBaseObject.Collider.IsClicked && InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, MouseButton.kRightButton)) ||
+                        InputManager.Instance.CheckInputEvent(AcceleratorPressedEvent, RightClickAccelerator)))
                 {
                     OnRightClicked(AttachedBaseObject);
                 }
@@ -124,6 +130,22 @@ namespace CelesteEngine
             {
                 ClickState = ClickState.kIdle;
             }
+        }
+
+        #endregion
+
+        #region InputManager Check Functions
+
+        /// <summary>
+        /// Checks to see whether the keyboard has registered that the key shortcut corresponding to a left click has been pressed.
+        /// </summary>
+        /// <returns></returns>
+        private bool IsAcceleratorPressed(object[] parameters)
+        {
+            Debug.Assert(parameters.Length == 1);
+            Debug.Assert(parameters[0] is Keys);
+
+            return GameKeyboard.Instance.IsKeyPressed((Keys)parameters[0]);
         }
 
         #endregion

@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7516016D-EF87-429A-ADAD-5C2061ED668B}</ProjectGuid>
+    <ProjectGuid>{23E7FF72-2390-404D-B6F6-00B1EF61356D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CelesteEngineData</RootNamespace>

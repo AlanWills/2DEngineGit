@@ -32,7 +32,7 @@ namespace CelesteEngine
 
         public CustomSoundEffect(string soundEffectAsset)
         {
-            SoundEffect = SFXManager.GetSoundEffect(soundEffectAsset);
+            SoundEffect = AssetManager.GetSoundEffect(soundEffectAsset);
             Volume = 1;
         }
 

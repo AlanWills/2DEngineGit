@@ -111,7 +111,7 @@ namespace CelesteEngine
         private GameMouse() :
             base(Vector2.Zero, AssetManager.MouseTextureAsset)
         {
-
+            UsesCollider = false;
         }
 
         #region Virtual Functions

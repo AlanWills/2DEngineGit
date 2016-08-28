@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5DFDF217-10CC-4A31-86E0-B7A4FE1DD5A3}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CelesteEngineUnitTestProject</RootNamespace>
+    <AssemblyName>CelesteEngineUnitTestProject</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Extensions\MockClasses.cs" />
+    <Compile Include="Extensions\TestExtensionFunctions.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\Camera and Input\TestCamera.cs" />
+    <Compile Include="Tests\Colliders\TestRectangleCollider.cs" />
+    <Compile Include="Tests\Iterators\TestBaseObjectIterator.cs" />
+    <Compile Include="Tests\Managers\Objects\TestAssetManager.cs" />
+    <Compile Include="Tests\Managers\Objects\TestObjectManager.cs" />
+    <Compile Include="Tests\Managers\Objects\TestScreenManager.cs" />
+    <Compile Include="Tests\Managers\TestInputManager.cs" />
+    <Compile Include="Tests\Modules\TestDamageableObjectModule.cs" />
+    <Compile Include="Tests\Modules\TestFlashingObjectModule.cs" />
+    <Compile Include="Tests\Modules\TestHighlightOnHoverModule.cs" />
+    <Compile Include="Tests\Modules\TestLifeTimeModule.cs" />
+    <Compile Include="Tests\Objects\TestBaseObject.cs" />
+    <Compile Include="Tests\Objects\TestComponent.cs" />
+    <Compile Include="Tests\Utils\TestMathUtils.cs" />
+    <Compile Include="Tests\Xml Data Serializer\Test Data Types\TestBaseData.cs" />
+    <Compile Include="Tests\Xml Data Serializer\Test Data Types\TestBoolData.cs" />
+    <Compile Include="Tests\Xml Data Serializer\Test Data Types\TestBoolListData.cs" />
+    <Compile Include="Tests\Xml Data Serializer\Test Data Types\TestClassData.cs" />
+    <Compile Include="Tests\Xml Data Serializer\Test Data Types\TestClassDataWithFloatList.cs" />
+    <Compile Include="Tests\Xml Data Serializer\Test Data Types\TestFloatData.cs" />
+    <Compile Include="Tests\Xml Data Serializer\Test Data Types\TestFloatListData.cs" />
+    <Compile Include="Tests\Xml Data Serializer\Test Data Types\TestIntData.cs" />
+    <Compile Include="Tests\Xml Data Serializer\Test Data Types\TestListData.cs" />
+    <Compile Include="Tests\Xml Data Serializer\Test Data Types\TestStringData.cs" />
+    <Compile Include="Tests\Xml Data Serializer\Test Data Types\TestStringListData.cs" />
+    <Compile Include="Tests\Xml Data Serializer\TestXmlDataSerializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Data\Options\Options.xml" />
+    <Content Include="Content\Data\Screens\RunTestsScreen.xml" />
+    <Content Include="Content\Data\Screens\StartupLogoScreen.xml" />
+    <Content Include="Content\Data\Screens\UnitTestGameMainMenuScreen.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Defaults\TestDefaultBoolData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Defaults\TestDefaultFloatData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Defaults\TestDefaultIntData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Defaults\TestDefaultListData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Defaults\TestDefaultStringData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Non Defaults\TestBaseData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Non Defaults\TestBoolData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Non Defaults\TestBoolListData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Non Defaults\TestClassData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Non Defaults\TestClassDataWithFloatList.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Non Defaults\TestFloatData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Non Defaults\TestFloatListData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Non Defaults\TestIntData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Non Defaults\TestStringData.xml" />
+    <Content Include="Content\Data\Test\Test Data Types\Non Defaults\TestStringListData.xml" />
+    <Content Include="Content\Data\Test\TestBaseScreenData.xml" />
+    <Content Include="Content\Data\Test\TestGameObjectData.xml" />
+    <Content Include="Content\Data\Test\TestOptionsData.xml" />
+    <Content Include="Content\SFX\UI\ButtonHover.wav" />
+    <Content Include="Content\SFX\UI\ButtonPressedSound.wav" />
+    <Content Include="Content\SFX\UI\ProgressTurnButtonPressedSound.wav" />
+    <Content Include="Content\Sprites\UI\BarBackground.png" />
+    <Content Include="Content\Sprites\UI\BlueSliderDown.png" />
+    <Content Include="Content\Sprites\UI\Button.png" />
+    <Content Include="Content\Sprites\UI\ButtonHighlighted.png" />
+    <Content Include="Content\Sprites\UI\Cursor.png" />
+    <Content Include="Content\Sprites\UI\EmptyPanelBackground.png" />
+    <Content Include="Content\Sprites\UI\Logo.png" />
+    <Content Include="Content\Sprites\UI\Menu.png" />
+    <Content Include="Content\Sprites\UI\NarrowButton.png" />
+    <Content Include="Content\Sprites\UI\NarrowButtonHighlighted.png" />
+    <Content Include="Content\Sprites\UI\NewCardIndicator.png" />
+    <Content Include="Content\Sprites\UI\SliderBar.png" />
+    <Content Include="Content\Sprites\UI\TextEntryBox.png" />
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Effects\LightEffect.fx" />
+    <None Include="Content\SpriteFonts\DefaultSpriteFont.spritefont" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CelesteEngineData\CelesteEngineData.csproj">
+      <Project>{23e7ff72-2390-404d-b6f6-00b1ef61356d}</Project>
+      <Name>CelesteEngineData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CelesteEngineUnitTestFramework\CelesteEngineUnitTestFramework.csproj">
+      <Project>{efb3d086-5658-4dbe-82ce-bd92816947a8}</Project>
+      <Name>CelesteEngineUnitTestFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CelesteEngine\CelesteEngine.csproj">
+      <Project>{195f7011-8678-43c2-850e-e2c3c6b88ea9}</Project>
+      <Name>CelesteEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

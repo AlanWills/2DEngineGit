@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelesteEngine", "CelesteEng
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelesteEngineData", "CelesteEngineData\CelesteEngineData.csproj", "{23E7FF72-2390-404D-B6F6-00B1EF61356D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelesteEngineUnitTestProject", "CelesteEngineUnitTestProject\CelesteEngineUnitTestProject.csproj", "{5DFDF217-10CC-4A31-86E0-B7A4FE1DD5A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelesteEngineUnitTestProject", "CelesteEngineUnitTestProject\CelesteEngineUnitTestProject.sln", "{5DFDF217-10CC-4A31-86E0-B7A4FE1DD5A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelesteEngineUnitTestFramework", "CelesteEngineUnitTestFramework\CelesteEngineUnitTestFramework.csproj", "{EFB3D086-5658-4DBE-82CE-BD92816947A8}"
 EndProject

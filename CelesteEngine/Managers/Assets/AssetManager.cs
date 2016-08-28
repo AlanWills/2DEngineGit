@@ -75,6 +75,8 @@ namespace CelesteEngine
         private static Dictionary<string, Texture2D> Sprites = new Dictionary<string, Texture2D>();
         private static Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
         private static Dictionary<string, BaseData> Data = new Dictionary<string, BaseData>();
+        private static Dictionary<string, SoundEffect> SoundEffects = new Dictionary<string, SoundEffect>();
+        private static Dictionary<string, Song> Songs = new Dictionary<string, Song>();
 
         #endregion
 
@@ -89,8 +91,8 @@ namespace CelesteEngine
             Sprites = Load<Texture2D>(content, SpritesPath);
             Effects = Load<Effect>(content, EffectsPath);
             Data = Load<BaseData>(content, DataPath);
-            MusicManager.Songs = Load<Song>(content, MusicPath);
-            SFXManager.SoundEffects = Load<SoundEffect>(content, SFXPath);
+            Songs = Load<Song>(content, MusicPath);
+            SoundEffects = Load<SoundEffect>(content, SFXPath);
         }
 
         /// <summary>
@@ -213,6 +215,42 @@ namespace CelesteEngine
 
             DebugUtils.AssertNotNull(effect);
             return effect;
+        }
+
+        /// <summary>
+        /// Get a pre-loaded sound effect
+        /// </summary>
+        /// <param name="path">The full path of the SoundEffect, e.g. "UI\\ButtonHover"</param>
+        /// <returns></returns>
+        public static SoundEffect GetSoundEffect(string path)
+        {
+            SoundEffect soundEffect;
+
+            if (!SoundEffects.TryGetValue(path, out soundEffect))
+            {
+                soundEffect = LoadAssetFromDisc<SoundEffect>(Path.Combine(SFXPath, path));
+            }
+
+            DebugUtils.AssertNotNull(soundEffect);
+            return soundEffect;
+        }
+
+        /// <summary>
+        /// Get a pre-loaded music file
+        /// </summary>
+        /// <param name="path">The full path of the SoundEffect, e.g. "Menu\\Emotional"</param>
+        /// <returns></returns>
+        public static Song GetMusic(string path)
+        {
+            Song song;
+
+            if (!Songs.TryGetValue(path, out song))
+            {
+                song = LoadAssetFromDisc<Song>(Path.Combine(MusicPath, path));
+            }
+
+            DebugUtils.AssertNotNull(song);
+            return song;
         }
 
         /// <summary>
