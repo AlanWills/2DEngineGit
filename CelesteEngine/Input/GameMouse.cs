@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace CelesteEngine
 {
@@ -28,7 +29,7 @@ namespace CelesteEngine
         {
             get
             {
-                return Camera.ScreenToGameCoords(WorldPosition);
+                return Camera.Instance.ScreenToGameCoords(WorldPosition);
             }
         }
 
@@ -57,12 +58,6 @@ namespace CelesteEngine
         /// Any call to IsClicked, IsPressed, IsDragged or GetDragDelta will return false or Vector2.Zero until the next frame begins.
         /// </summary>
         public bool IsFlushed { get; set; }
-
-        /// <summary>
-        /// When we update colliders we wish to cast a ray into our scene.
-        /// The first object we hit will have it's collider bools updated, the rest will not.
-        /// </summary>
-        public bool ReadyForRayIntersection { get; set; }
 
         /// <summary>
         /// The amount the mouse wheel has scrolled in the latest frame.
@@ -135,9 +130,6 @@ namespace CelesteEngine
         public override void Update(float elapsedGameTime)
         {
             base.Update(elapsedGameTime);
-
-            // Reset our ray collision bool
-            ReadyForRayIntersection = true;
 
             PreviousMouseState = CurrentMouseState;
             CurrentMouseState = Mouse.GetState();
@@ -272,6 +264,32 @@ namespace CelesteEngine
         {
             Snapping = snapping;
             Increment = increment;
+        }
+
+        /// <summary>
+        /// A common input check function used to check if a mouse button is clicked.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static bool IsMouseButtonClicked(params object[] parameters)
+        {
+            Debug.Assert(parameters.Length == 1);
+            Debug.Assert(parameters[0] is MouseButton);
+
+            return Instance.IsClicked((MouseButton)parameters[0]);
+        }
+
+        /// <summary>
+        /// A common input check function used to check if a mouse button is down.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static bool IsMouseButtonDown(params object[] parameters)
+        {
+            Debug.Assert(parameters.Length == 1);
+            Debug.Assert(parameters[0] is MouseButton);
+
+            return GameMouse.Instance.IsDown((MouseButton)parameters[0]);
         }
 
         #endregion

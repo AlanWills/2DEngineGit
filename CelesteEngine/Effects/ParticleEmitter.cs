@@ -95,7 +95,7 @@ namespace CelesteEngine
             float emitTimer,
             Vector2 localPosition, 
             string particleDataAsset) :
-            base(localPosition, AssetManager.DefaultEmptyPanelTextureAsset)
+            base(localPosition, AssetManager.DefaultEmptyTextureAsset)
         {
             StartSize = startSize;
             EndSize = endSize;

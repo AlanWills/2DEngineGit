@@ -62,7 +62,7 @@ namespace CelesteEngineCelesteEngineUnitTestGameProject
         }
 
         public MockBaseObject(Vector2 localPosition) :
-            this(localPosition, AssetManager.DefaultEmptyPanelTextureAsset)
+            this(localPosition, AssetManager.DefaultEmptyTextureAsset)
         {
 
         }

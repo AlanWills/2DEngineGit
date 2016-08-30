@@ -143,9 +143,6 @@ namespace CelesteEngine
             MusicQueueType = QueueType.WaitForCurrent;
         }
 
-        // Do three drawing steps here rather than in screen manager
-        // Draw mouse
-
         #region Virtual Functions
 
         /// <summary>
@@ -274,8 +271,9 @@ namespace CelesteEngine
         {
             base.HandleInput(elapsedGameTime, mousePosition);
 
-            Vector2 gameMouseCoords = Camera.ScreenToGameCoords(mousePosition);
+            Vector2 gameMouseCoords = Camera.Instance.ScreenToGameCoords(mousePosition);
 
+            // Handle these in this order so we respect the depth elements implied here
             if (ScreenUIObjects.ShouldHandleInput) { ScreenUIObjects.HandleInput(elapsedGameTime, mousePosition); }
             if (InGameUIObjects.ShouldHandleInput) { InGameUIObjects.HandleInput(elapsedGameTime, gameMouseCoords); }
             if (GameObjects.ShouldHandleInput) { GameObjects.HandleInput(elapsedGameTime, gameMouseCoords); }
@@ -327,7 +325,7 @@ namespace CelesteEngine
                 {
                     graphicsDevice.Clear(Color.Black);
 
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, null, Camera.TransformationMatrix);
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, null, Camera.Instance.TransformationMatrix);
                     Lights.Draw(spriteBatch);
                     spriteBatch.End();
                 }
@@ -353,7 +351,7 @@ namespace CelesteEngine
                 }
 
                 // Draw the camera dependent objects using the camera transformation matrix
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, Camera.TransformationMatrix);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, Camera.Instance.TransformationMatrix);
                 {
                     if (EnvironmentObjects.ShouldDraw) { EnvironmentObjects.Draw(spriteBatch); }
                     if (GameObjects.ShouldDraw) { GameObjects.Draw(spriteBatch); }
@@ -367,7 +365,7 @@ namespace CelesteEngine
                 graphicsDevice.SetRenderTarget(InGameUIRenderTarget);
                 graphicsDevice.Clear(Color.Transparent);
 
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, Camera.TransformationMatrix);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, Camera.Instance.TransformationMatrix);
                 {
                     if (InGameUIObjects.ShouldDraw) { InGameUIObjects.Draw(spriteBatch); }
                 }
@@ -399,7 +397,7 @@ namespace CelesteEngine
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 Lights.LightEffect.Parameters["lightMask"].SetValue(LightRenderTarget);
                 Lights.LightEffect.Parameters["ambientLight"].SetValue(Lights.AmbientLight.ToVector4());
-                Lights.LightEffect.CurrentTechnique.Passes[0].Apply();
+                //Lights.LightEffect.CurrentTechnique.Passes[0].Apply();
                 spriteBatch.Draw(GameWorldRenderTarget, Vector2.Zero, Color.White);
                 spriteBatch.End();
 

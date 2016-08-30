@@ -4,8 +4,6 @@ using System.Diagnostics;
 
 namespace CelesteEngine
 {
-    public delegate void OnClicked(BaseObject baseObject);
-
     /// <summary>
     /// A module for objects we wish to have click interaction with.
     /// </summary>
@@ -61,7 +59,7 @@ namespace CelesteEngine
 
             // By default, the accelerators are set to Keys.None so will not be used
             // Add the accelerator check events to the InputManager
-            InputManager.Instance.AddInputEvent(AcceleratorPressedEvent, IsAcceleratorPressed, InputManager.Empty);
+            InputManager.Instance.AddInputEvent(AcceleratorPressedEvent, IsAcceleratorPressed, InputManager.EmptyCheck);
         }
 
         #region Virtual Functions
@@ -84,31 +82,33 @@ namespace CelesteEngine
             // If we have clicked it and it is not already clicked, fire the appropriate event
             if (ClickState != ClickState.kPressed)
             {
+                // We have to check the IsClicked Collider flag for each event, because our accelerator does not require the object to be clicked to fire the event
+
                 // One of our click methods should not be null otherwise why use a clickable module?!
                 Debug.Assert(OnLeftClicked != null || OnMiddleClicked != null || OnRightClicked != null);
 
                 // If our corresponding event is null and we have either clicked the appropriate mouse button and we are clicked or have an accelerator key set up which has been pressed, then fire the event
                 if (OnLeftClicked != null &&
-                   ((AttachedBaseObject.Collider.IsClicked && InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, MouseButton.kLeftButton)) || 
-                    InputManager.Instance.CheckInputEvent(AcceleratorPressedEvent, LeftClickAccelerator)))
+                    ((AttachedBaseObject.Collider.IsClicked && InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, new object[] { MouseButton.kLeftButton })) ||
+                    InputManager.Instance.CheckInputEvent(AcceleratorPressedEvent, new object[] { LeftClickAccelerator })))
                 {
                     OnLeftClicked(AttachedBaseObject);
                 }
                 else if (OnMiddleClicked != null &&
-                        ((AttachedBaseObject.Collider.IsClicked && InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, MouseButton.kMiddleButton)) ||
-                        InputManager.Instance.CheckInputEvent(AcceleratorPressedEvent, MiddleClickAccelerator)))
+                        ((AttachedBaseObject.Collider.IsClicked && InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, new object[] { MouseButton.kMiddleButton })) ||
+                        InputManager.Instance.CheckInputEvent(AcceleratorPressedEvent, new object[] { MiddleClickAccelerator })))
                 {
                     OnMiddleClicked(AttachedBaseObject);
                 }
                 else if (OnRightClicked != null &&
-                        ((AttachedBaseObject.Collider.IsClicked && InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, MouseButton.kRightButton)) ||
-                        InputManager.Instance.CheckInputEvent(AcceleratorPressedEvent, RightClickAccelerator)))
+                        ((AttachedBaseObject.Collider.IsClicked && InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, new object[] { MouseButton.kRightButton })) ||
+                        InputManager.Instance.CheckInputEvent(AcceleratorPressedEvent, new object[] { RightClickAccelerator })))
                 {
                     OnRightClicked(AttachedBaseObject);
                 }
                 else
                 {
-                    // We have been clicked on, but either not by the right mouse, or we have not got an event for that mouse button set up, so just return without updating the ClickState etc.
+                    // Don't update click state if we haven't been clicked on
                     return;
                 }
 

@@ -111,6 +111,7 @@ namespace CelesteEngine
             OptionsManager.LoadAssets(Content);
             CommandManager.Instance.LoadContent();
             InputManager.Instance.LoadContent();
+            Camera.Instance.LoadContent();
 
             base.LoadContent();
         }
@@ -124,8 +125,8 @@ namespace CelesteEngine
 
             CommandManager.Instance.Initialise();
             ThreadManager.Initialise();
-            Camera.Initialise();
             InputManager.Instance.Initialise();
+            Camera.Instance.Initialise();
 
             base.Initialise();
         }
@@ -141,14 +142,15 @@ namespace CelesteEngine
             // Update the input manager first
             InputManager.Instance.HandleInput(elapsedGameTime, mousePosition);
 
-            // Then handle camera input
-            Camera.HandleInput(elapsedGameTime);
-
             // Handle input for all of the scripts in our script manager
             CommandManager.Instance.HandleInput(elapsedGameTime, mousePosition);
 
             // Then finally handle screen input
             base.HandleInput(elapsedGameTime, mousePosition);
+
+            // Then handle camera input
+            // Do this last - if we are on a touch screen we may not want to move the camera unless we have not collided with any objects
+            Camera.Instance.HandleInput(elapsedGameTime, mousePosition);
         }
 
         /// <summary>
@@ -166,7 +168,7 @@ namespace CelesteEngine
             ThreadManager.Update();
 
             // Update camera
-            Camera.Update(elapsedGameTime);
+            Camera.Instance.Update(elapsedGameTime);
 
             // Then update any screens
             base.Update(elapsedGameTime);

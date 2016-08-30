@@ -57,7 +57,7 @@ namespace CelesteEngine
         public const string DefaultTextEntryBoxTextureAsset = "UI\\TextEntryBox";
 
         // Panels and Menus
-        public const string DefaultEmptyPanelTextureAsset = "UI\\EmptyPanelBackground";
+        public const string DefaultEmptyTextureAsset = "UI\\EmptyPanelBackground";
         public const string DefaultMenuTextureAsset = "UI\\Menu";
 
         // Lights

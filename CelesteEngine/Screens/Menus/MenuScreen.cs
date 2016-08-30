@@ -23,7 +23,7 @@ namespace CelesteEngine
         {
             base.Initialise();
 
-            Camera.SetFixed(Vector2.Zero);
+            Camera.Instance.SetFixed(Vector2.Zero);
         }
 
         /// <summary>

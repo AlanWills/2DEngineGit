@@ -49,7 +49,7 @@ namespace CelesteEngine
             string dataType = nodeReader.GetAttribute("Type");
 
             // Get the assembly for the type we are trying to load - this has to pass
-            Assembly assembly;
+            Assembly assembly = null;
             Debug.Assert(TryGetAssembly(ref dataType, out assembly));
 
             // Move either to the </Asset> tag if we have no data to load, or to the first data element

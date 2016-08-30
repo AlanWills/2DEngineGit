@@ -45,7 +45,7 @@ namespace CelesteEngine
 
         #endregion
 
-        public TabControl(Vector2 sizeOfTabsSection, Vector2 localPosition, string textureAsset = AssetManager.DefaultEmptyPanelTextureAsset) :
+        public TabControl(Vector2 sizeOfTabsSection, Vector2 localPosition, string textureAsset = AssetManager.DefaultEmptyTextureAsset) :
             base(sizeOfTabsSection, localPosition, textureAsset)
         {
             Tabs = new List<ClickableImage>();

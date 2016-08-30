@@ -12,6 +12,24 @@ namespace CelesteEngine
         #region Properties and Fields
 
         /// <summary>
+        /// A class specific SpriteFont which can be used to draw text.
+        /// </summary>
+        private SpriteFont spriteFont;
+        public SpriteFont SpriteFont
+        {
+            get
+            {
+                if (spriteFont == null)
+                {
+                    spriteFont = AssetManager.GetSpriteFont(AssetManager.DefaultSpriteFontAsset);
+                }
+
+                return spriteFont;
+            }
+            private set { spriteFont = value; }
+        }
+
+        /// <summary>
         /// The text which we will be rendering.
         /// Automatically changes the size so the new text will be in the same dimensions.
         /// </summary>
@@ -57,7 +75,7 @@ namespace CelesteEngine
         #endregion
 
         public Label(string text, Vector2 localPosition, string spriteFontAsset = AssetManager.DefaultSpriteFontAsset) :
-            base(localPosition, AssetManager.DefaultEmptyPanelTextureAsset)
+            base(localPosition, AssetManager.DefaultEmptyTextureAsset)
         {
             Text = text;
 
@@ -67,7 +85,7 @@ namespace CelesteEngine
         }
 
         public Label(string text, Anchor anchor, int depth, string spriteFontAsset = AssetManager.DefaultSpriteFontAsset) :
-            base(anchor, depth, AssetManager.DefaultEmptyPanelTextureAsset)
+            base(anchor, depth, AssetManager.DefaultEmptyTextureAsset)
         {
             Text = text;
 

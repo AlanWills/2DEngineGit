@@ -23,15 +23,7 @@ namespace CelesteEngine
             UsesCollider = false;
             AnimationModule = AddModule(new AnimationModule());
         }
-
-        // If we want to implement adding size, then we need to work out a nice way of scaling the input size by the number of frames
-        /*public AnimatedGameObject(Vector2 size, Vector2 localPosition, string animationDataAsset) :
-            base(localPosition, animationDataAsset)
-        {
-            Size = size;
-            
-        }*/
-
+        
         #region Virtual Functions
 
         /// <summary>

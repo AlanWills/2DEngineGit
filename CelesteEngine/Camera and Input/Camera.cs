@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 
 namespace CelesteEngine
@@ -17,49 +18,61 @@ namespace CelesteEngine
     /// A static class used as an in game camera.
     /// This will also allow us to not render objects if they are not contained within the camera viewport
     /// </summary>
-    public static class Camera
+    public class Camera : Component
     {
         #region Properties and Fields
+
+        private static Camera instance;
+        public static Camera Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Camera();
+                }
+
+                return instance;
+            }
+        }
 
         /// <summary>
         /// A private variable used to determine what behaviour the camera should perform.
         /// This should remain private and instead, to change the camera mode, the appropriate functions 'SetFree', 'SetFixed', 'SetFollow'
         /// should be called.  This is because extra parameters are required for each mode.
         /// </summary>
-        private static CameraMode CameraMode { get; set; }
+        private CameraMode CameraMode { get; set; }
 
         /// <summary>
         /// The position of the Camera - corresponds to where the top left of the screen is.  Again we should not be able to set this outside of this class.
         /// Ways to change the camera position are determined by the CameraMode, and also by a parameter passed in when changing mode ONLY.
         /// </summary>
-        public static Vector2 Position { get; private set; }
+        public Vector2 Position { get; private set; }
 
         /// <summary>
         /// A value to determine how fast the camera should move in Free mode.  This should be freely available for alteration.
         /// </summary>
-        public static float PanSpeed { get; set; }
+        public float PanSpeed { get; set; }
 
         /// <summary>
         /// A value to determine how much we increase or decrease the camera zoom by when pressing + or -.
         /// </summary>
-        public static float ZoomIncrement { get; set; }
+        public float ZoomIncrement { get; set; }
 
         /// <summary>
         /// A value only to be altered and seen by this class, used to determine the zoom of the camera.
         /// This value can be changed in Free or Follow mode by keyboard input ONLY.
         /// </summary>
-        private static float Zoom { get; set; }
+        private float Zoom { get; set; }
 
         /// <summary>
         /// This represents the current transformation of the camera calculated from the position and zoom.
         /// It is used as a parameter to SpriteBatch.Begin() to give the impression of a camera when drawing objects
         /// </summary>
-        public static Matrix TransformationMatrix
+        public Matrix TransformationMatrix
         {
             get
             {
-                Debug.Assert(IsInitialised);
-
                 // This could be done with usual operators - *, + etc., but this is an optimisation
                 return Matrix.Multiply(Matrix.CreateTranslation(Position.X, Position.Y, 0), Matrix.CreateScale(Zoom));
             }
@@ -70,28 +83,33 @@ namespace CelesteEngine
         /// This will be used in determining whether an object is visible or not.
         /// It will need to be set up once, or when our screen size changes.
         /// </summary>
-        public static Rectangle ViewportRectangleScreenSpace { get; private set; }
+        public Rectangle ViewportRectangleScreenSpace { get; private set; }
 
         /// <summary>
         /// Corresponds to our viewport rectangle but in game space - means we can check objects in the game world to see whether we should draw them.
         /// </summary>
-        public static Rectangle ViewportRectangleGameSpace { get; private set; }
+        public Rectangle ViewportRectangleGameSpace { get; private set; }
 
         /// <summary>
-        /// A bool just to track whether we have called Initialise.  This will be checked in Update and HandleInput
+        /// An extra vector2 used in the calculation of the pan amount for the camera
         /// </summary>
-        private static bool IsInitialised { get; set; }
+        private Vector2 PanDelta { get; set; }
+
+        /// <summary>
+        /// A reference to an object that we will be following when in Follow Mode
+        /// </summary>
+        private BaseObject FollowingObject { get; set; }
+
+        #region Camera Input Event Names
+
+        private const string CameraPan = "CameraPan";
 
         #endregion
 
-        /// <summary>
-        /// Initialises the Camera properties
-        /// </summary>
-        public static void Initialise()
-        {
-            // Check to see whether we have already initialised the camera
-            if (IsInitialised) { return; }
+        #endregion
 
+        private Camera()
+        {
             CameraMode = CameraMode.kFixed;
             PanSpeed = 500;
             Zoom = 1;
@@ -99,39 +117,33 @@ namespace CelesteEngine
 
             // This can be improved upon by using zoom to affect the length
             ViewportRectangleGameSpace = new Rectangle((int)-Position.X, (int)-Position.Y, ViewportRectangleScreenSpace.Width, ViewportRectangleScreenSpace.Height);
-
-            IsInitialised = true;
         }
 
-        #region Camera Position and Zoom Update Functions
+        #region Virtual Functions
 
         /// <summary>
-        /// Updates the camera position based on what mode we are in - should be called every frame
+        /// Sets up input events for camera behaviour.
+        /// This should happen here rather than the constructor because we may wish to edit the Camera properties from the constructor of the input manager
         /// </summary>
-        /// <param name="elapsedSeconds"></param>
-        public static void Update(float elapsedSeconds)
+        public override void Initialise()
         {
-            Debug.Assert(IsInitialised);
+            CheckShouldInitialise();
 
-            // This can be improved upon by using zoom to affect the length
-            ViewportRectangleGameSpace = new Rectangle((int)-Position.X, (int)-Position.Y, ViewportRectangleScreenSpace.Width, ViewportRectangleScreenSpace.Height);
+            InputManager.Instance.AddInputEvent(CameraPan, IsKeyDown, InputManager.EmptyCheck);
 
-            // Only the follow mode requires no user input to update
-            if (CameraMode != CameraMode.kFollow) { return; }
-
-            // TODO - Follow mode not supported yet
+            base.Initialise();
         }
 
         /// <summary>
         /// Updates the camera position based on what mode we are in and any appropriate user input - should be called every frame
         /// </summary>
         /// <param name="elapsedGameTime"></param>
-        public static void HandleInput(float elapsedGameTime)
+        public override void HandleInput(float elapsedGameTime, Vector2 mousePosition)
         {
-            Debug.Assert(IsInitialised);
+            base.HandleInput(elapsedGameTime, mousePosition);
 
             // If we are in fixed camera mode, we should not update anything
-            if (CameraMode == CameraMode.kFixed) { return; }
+            if (CameraMode == CameraMode.kFixed || CameraMode == CameraMode.kFollow) { return; }
 
             // Handles zooming in or out
             if (GameKeyboard.Instance.IsKeyPressed(InputMap.ZoomIn))
@@ -147,34 +159,36 @@ namespace CelesteEngine
             // We will be updating the position using keyboard input from now on - this only applies to Free mode
             if (CameraMode == CameraMode.kFollow) { return; }
 
-            Vector2 delta = Vector2.Zero;
+            PanDelta = Vector2.Zero;
 
             // Handles panning in all four directions
-            if (GameKeyboard.Instance.IsKeyDown(InputMap.PanLeft))
-            {
-                delta += new Vector2(1, 0);
-            }
+            InputManager.Instance.CheckInputEvent(CameraPan, new object[] { Keys.Left, new Vector2(1, 0) });
+            InputManager.Instance.CheckInputEvent(CameraPan, new object[] { Keys.Right, new Vector2(-1, 0) });
+            InputManager.Instance.CheckInputEvent(CameraPan, new object[] { Keys.Up, new Vector2(0, 1) });
+            InputManager.Instance.CheckInputEvent(CameraPan, new object[] { Keys.Down, new Vector2(0, -1) });
 
-            if (GameKeyboard.Instance.IsKeyDown(InputMap.PanRight))
+            if (PanDelta != Vector2.Zero)
             {
-                delta += new Vector2(-1, 0);
+                PanDelta.Normalize();
+                Position += PanDelta * PanSpeed * elapsedGameTime;
             }
+        }
 
-            if (GameKeyboard.Instance.IsKeyDown(InputMap.PanUp))
-            {
-                delta += new Vector2(0, 1);
-            }
+        /// <summary>
+        /// Updates the camera position based on what mode we are in - should be called every frame
+        /// </summary>
+        /// <param name="elapsedSeconds"></param>
+        public override void Update(float elapsedGameTime)
+        {
+            base.Update(elapsedGameTime);
 
-            if (GameKeyboard.Instance.IsKeyDown(InputMap.PanDown))
-            {
-                delta += new Vector2(0, -1);
-            }
+            // This can be improved upon by using zoom to affect the length
+            ViewportRectangleGameSpace = new Rectangle((int)-Position.X, (int)-Position.Y, ViewportRectangleScreenSpace.Width, ViewportRectangleScreenSpace.Height);
 
-            if (delta != Vector2.Zero)
-            {
-                delta.Normalize();
-                Position += delta * PanSpeed * elapsedGameTime;
-            }
+            // Only the follow mode requires no user input to update
+            if (CameraMode != CameraMode.kFollow) { return; }
+
+            FocusOnPosition(FollowingObject.WorldPosition, false);
         }
 
         #endregion
@@ -186,10 +200,8 @@ namespace CelesteEngine
         /// </summary>
         /// <param name="focusPosition">The position that we wish to have in the centre of the screen</param>
         /// <param name="screenSpace">A flag to indicate whether the focus position is in screen space or game space.  The camera will transform the point if necessary</param>
-        public static void FocusOnPosition(Vector2 focusPosition, bool screenSpace)
+        public void FocusOnPosition(Vector2 focusPosition, bool screenSpace)
         {
-            Debug.Assert(IsInitialised);
-
             if (!screenSpace)
             {
                 // Transform into screen space if necessary
@@ -205,10 +217,8 @@ namespace CelesteEngine
         /// </summary>
         /// <param name="screenPosition">The position on the screen between (0, 0) and (screen width, screen height)</param>
         /// <returns>The game space coordinates corresponding to the inputted screen position</returns>
-        public static Vector2 ScreenToGameCoords(Vector2 screenPosition)
+        public Vector2 ScreenToGameCoords(Vector2 screenPosition)
         {
-            Debug.Assert(IsInitialised);
-
             // This could be done using ordinary mathematical operators - +, / etc. but this is an optimisation
             return Vector2.Divide(Vector2.Add(Position, screenPosition), Zoom);
         }
@@ -218,10 +228,8 @@ namespace CelesteEngine
         /// </summary>
         /// <param name="gamePosition">The position in game space.</param>
         /// <returns>The screen space coordinates corresponding to the inputted game position</returns>
-        public static Vector2 GameToScreenCoords(Vector2 gamePosition)
+        public Vector2 GameToScreenCoords(Vector2 gamePosition)
         {
-            Debug.Assert(IsInitialised);
-
             // This could be done using ordinary mathematical operators - +, / etc. but this is an optimisation
             return Vector2.Subtract(Vector2.Multiply(gamePosition, Zoom), Position);
         }
@@ -231,7 +239,7 @@ namespace CelesteEngine
         /// </summary>
         /// <param name="objectManager"></param>
         /// <param name="screenSpace"></param>
-        public static void CheckVisibility<T>(ObjectManager<T> objectManager, bool screenSpace) where T : BaseObject
+        public void CheckVisibility<T>(ObjectManager<T> objectManager, bool screenSpace) where T : BaseObject
         {
             Rectangle rectangleToUse = screenSpace ? ViewportRectangleScreenSpace : ViewportRectangleGameSpace;
             Vector2 centre = rectangleToUse.Center.ToVector2();
@@ -266,37 +274,88 @@ namespace CelesteEngine
         /// <summary>
         /// Sets the CameraMode to free
         /// </summary>
-        public static void SetFree()
+        public void SetFree()
         {
             CameraMode = CameraMode.kFree;
+            FollowingObject = null;
         }
 
         /// <summary>
         /// Sets the CameraMode to free and the camera's position to the inputted value.
         /// </summary>
         /// <param name="resetPosition">The new value of the camera's position</param>
-        public static void SetFree(Vector2 resetPosition)
+        public void SetFree(Vector2 resetPosition)
         {
             SetFree();
             Position = resetPosition;
         }
 
         /// <summary>
+        /// Sets the CameraMode to follow
+        /// </summary>
+        public void SetFollow(BaseObject followingObject)
+        {
+            CameraMode = CameraMode.kFollow;
+            FollowingObject = followingObject;
+        }
+
+        /// <summary>
         /// Sets the CameraMode to fixed
         /// </summary>
-        public static void SetFixed()
+        public void SetFixed()
         {
             CameraMode = CameraMode.kFixed;
+            FollowingObject = null;
         }
 
         /// <summary>
         /// Sets the CameraMode to Fixed and the camera's position to the inputted value
         /// </summary>
         /// <param name="resetPosition">The new value of the camera's position</param>
-        public static void SetFixed(Vector2 fixedPosition)
+        public void SetFixed(Vector2 fixedPosition)
         {
             SetFixed();
             Position = fixedPosition;
+        }
+
+        #endregion
+
+        #region Input Manager Check Funcs
+
+        /// <summary>
+        /// Custom callbacks which allow us to set our PanDelta
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        private bool IsKeyDown(params object[] parameters)
+        {
+            Debug.Assert(parameters.Length == 2);
+            DebugUtils.AssertNotNull((Vector2)parameters[1]);
+            bool result = GameKeyboard.IsKeyDown(parameters);
+
+            if (result)
+            {
+                PanDelta += (Vector2)parameters[1];
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Custom callbacks which allow us to set our PanDelta
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        private bool IsFreeDragged(params object[] parameters)
+        {
+            bool result = GameTouchPanel.IsFreeDragged(parameters);
+
+            if (result && PanDelta == Vector2.Zero)
+            {
+                PanDelta += GameTouchPanel.Instance.Gesture.Delta;
+            }
+
+            return result;
         }
 
         #endregion

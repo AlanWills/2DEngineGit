@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 
 namespace CelesteEngine
 {
@@ -102,6 +103,23 @@ namespace CelesteEngine
             }
 
             return PressedKeys;
+        }
+
+        #endregion
+
+        #region Input Manager Check Funcs
+
+        /// <summary>
+        /// A commonly used input manager check func used to query whether the inputted key is down
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static bool IsKeyDown(params object[] parameters)
+        {
+            Debug.Assert(parameters.Length >= 1);
+            Debug.Assert(parameters[0] is Keys);
+
+            return Instance.IsKeyDown((Keys)parameters[0]);
         }
 
         #endregion

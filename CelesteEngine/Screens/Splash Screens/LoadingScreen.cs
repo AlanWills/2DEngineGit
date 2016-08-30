@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace CelesteEngine
+﻿namespace CelesteEngine
 {
     /// <summary>
     /// An intermediary class used for moving to a gameplay screen.
@@ -17,8 +15,8 @@ namespace CelesteEngine
 
         #endregion
 
-        public LoadingScreen(GameplayScreen screenToTransitionTo, string screenDataAsset = "Screens\\LoadingScreen") :
-            base(screenDataAsset)
+        public LoadingScreen(GameplayScreen screenToTransitionTo) :
+            base("LoadingScreen")
         {
             ScreenToTransitionTo = screenToTransitionTo;
             MusicQueueType = QueueType.PlayImmediately;

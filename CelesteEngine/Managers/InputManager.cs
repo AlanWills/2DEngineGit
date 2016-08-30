@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using CheckFuncs = System.Tuple<System.Func<object[], bool>, System.Func<object[], bool>>;
@@ -36,17 +37,39 @@ namespace CelesteEngine
         protected Dictionary<string, Tuple<Func<object[], bool>, Func<object[], bool>>> EventFuncMap { get; private set; }
 
         /// <summary>
+        /// When we update colliders we wish to cast a ray into our scene.
+        /// The first object we hit will have it's collider bools updated, the rest will not.
+        /// </summary>
+        public bool ReadyForRayIntersection { get; set; }
+
+        /// <summary>
         /// Empty function used for a no-op (i.e. if a certain event is not supported on a platform).
         /// </summary>
-        public static Func<object[], bool> Empty = delegate { DebugUtils.Fail("Not implemented for this platform"); return false; };
+        public static Func<object[], bool> EmptyCheck = delegate { DebugUtils.Fail("Not implemented for this platform"); return false; };
 
         #endregion
 
         protected InputManager()
         {
             EventFuncMap = new Dictionary<string, CheckFuncs>();
-            EventFuncMap.Add(ScreenClicked, new CheckFuncs(IsMouseButtonClicked, IsScreenTapped));
+            AddInputEvent(ScreenClicked, GameMouse.IsMouseButtonClicked, GameTouchPanel.IsScreenTapped);
+            AddInputEvent(ScreenPressed, GameMouse.IsMouseButtonDown, GameTouchPanel.IsScreenTapped);
         }
+
+        #region Virtual Functions
+
+        /// <summary>
+        /// Reset the ray collision bool ready for a new batch of collisions.
+        /// </summary>
+        /// <param name="elapsedGameTime"></param>
+        public override void Update(float elapsedGameTime)
+        {
+            base.Update(elapsedGameTime);
+
+            ReadyForRayIntersection = true;
+        }
+
+        #endregion
 
         #region Utility Functions
 
@@ -69,13 +92,11 @@ namespace CelesteEngine
         /// Returns true if platform input was sufficient for the event and false if not.
         /// </summary>
         /// <param name="eventName"></param>
-        public abstract bool CheckInputEvent(string eventName, params object[] parameters);
+        public abstract bool CheckInputEvent(string eventName, object[] windowsParameters = null, object[] androidParameters = null);
 
         #endregion
 
         #region Common Input Check Functions
-
-        #region Clicking Check Funcs
 
         /// <summary>
         /// Corresponds to the screen being interacted with - either a click with the mouse or a tap on a touch screen.
@@ -83,20 +104,11 @@ namespace CelesteEngine
         /// <returns></returns>
         public const string ScreenClicked = "ScreenClicked";
 
-        private static bool IsMouseButtonClicked(params object[] parameters)
-        {
-            Debug.Assert(parameters.Length == 1);
-            Debug.Assert(parameters[0] is MouseButton);
-
-            return GameMouse.Instance.IsClicked((MouseButton)parameters[0]);
-        }
-
-        private static bool IsScreenTapped(params object[] parameters)
-        {
-            return GameTouchPad.Instance.IsScreenTouched;
-        }
-
-        #endregion
+        /// <summary>
+        /// Corresponds to the screen being interacted with - either a prolonged press with the mouse or a prolonged press on a touch screen.
+        /// </summary>
+        /// <returns></returns>
+        public const string ScreenPressed = "ScreenPressed";
 
         #endregion
     }

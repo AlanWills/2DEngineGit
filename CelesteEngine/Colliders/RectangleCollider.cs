@@ -30,12 +30,14 @@ namespace CelesteEngine
 
         #region Abstract Collision Functions
 
-        public override bool CheckCollisionWith(RectangleCollider rectangleCollider)
+        protected override bool CheckCollisionWith(RectangleCollider rectangleCollider)
         {
-            bool result = rectangleCollider.Bounds.Intersects(bounds);
-            CollidedThisFrame = CollidedThisFrame || result;
+            return rectangleCollider.Bounds.Intersects(bounds);
+        }
 
-            return result;
+        protected override bool CheckCollisionWith(CircleCollider circleCollider)
+        {
+            throw new NotImplementedException();
         }
 
         public override bool CheckIntersects(Rectangle rectangle)
@@ -57,17 +59,14 @@ namespace CelesteEngine
         /// </summary>
         public override void Update()
         {
-            base.Update();
+            Vector2 parentWorldPos = Vector2.Zero;
 
-            Vector2 parentWorldPos = Vector2.Zero, parentSize = Vector2.Zero;
-
-            Parent.UpdateCollider(ref parentWorldPos, ref parentSize);
-            Size = parentSize;
+            Parent.UpdateCollider(ref parentWorldPos, ref size);
 
             // Update the bounds location (top left)
             bounds.Location = new Point(
-                (int)(parentWorldPos.X - parentSize.X * 0.5f),
-                (int)(parentWorldPos.Y - parentSize.Y * 0.5f));
+                (int)(parentWorldPos.X - Size.X * 0.5f),
+                (int)(parentWorldPos.Y - Size.Y * 0.5f));
 
             // Update the bounds size
             bounds.Size = Size.ToPoint();

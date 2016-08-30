@@ -120,17 +120,20 @@ namespace CelesteEngine
         /// <param name="mousePosition">The current position of the mouse in the space of the Component (screen or game)</param>
         public override void HandleInput(float elapsedGameTime, Vector2 mousePosition)
         {
-            base.HandleInput(elapsedGameTime, mousePosition);
-
-            // Loop through the active object
-            foreach (T obj in ActiveObjects)
+            // Loop through the active object but in reverse order so that recently added objects (the one on top at the end of the list) will be handled first
+            for (int i = ActiveObjectsCount - 1; i >= 0; i--)
             {
+                T obj = ActiveObjects[i];
+
                 // Handle input for the object
                 if (obj.ShouldHandleInput)
                 {
                     obj.HandleInput(elapsedGameTime, mousePosition);
                 }
             }
+
+            // Perform handle input/check for collisions last on this object
+            base.HandleInput(elapsedGameTime, mousePosition);
         }
 
         /// <summary>

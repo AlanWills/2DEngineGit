@@ -66,7 +66,12 @@ namespace CelesteEngine
         /// <summary>
         /// The size of the collider.
         /// </summary>
-        public Vector2 Size { get; protected set; }
+        protected Vector2 size;
+        public Vector2 Size
+        {
+            get { return size; }
+            protected set { size = value; }
+        }
 
         #endregion
 
@@ -87,7 +92,19 @@ namespace CelesteEngine
             RectangleCollider rectangleCollider = collider as RectangleCollider;
             if (rectangleCollider != null)
             {
-                return CheckCollisionWith(rectangleCollider);
+                bool result = CheckCollisionWith(rectangleCollider);
+                CollidedThisFrame = CollidedThisFrame || result;
+
+                return result;
+            }
+
+            CircleCollider circleCollider = collider as CircleCollider;
+            if (circleCollider != null)
+            {
+                bool result = CheckCollisionWith(rectangleCollider);
+                CollidedThisFrame = CollidedThisFrame || result;
+
+                return result;
             }
 
             DebugUtils.Fail("Checking against an unknown collider.");
@@ -99,7 +116,14 @@ namespace CelesteEngine
         /// </summary>
         /// <param name="rectangleCollider">The rectangle collider to check against</param>
         /// <returns>Returns true if a collision occurred</returns>
-        public abstract bool CheckCollisionWith(RectangleCollider rectangleCollider);
+        protected abstract bool CheckCollisionWith(RectangleCollider rectangleCollider);
+
+        /// <summary>
+        /// Check collision with inputted circle collider and updates the CollidedThisFrame bool
+        /// </summary>
+        /// <param name="circleCollider">The circle collider to check against</param>
+        /// <returns>True if a collision occurred</returns>
+        protected abstract bool CheckCollisionWith(CircleCollider circleCollider);
 
         /// <summary>
         /// Checks collision with inputted point.  Does not update CollidedThisFrame bool
@@ -131,11 +155,11 @@ namespace CelesteEngine
             // If the mouse position and this have collided the mouse is over it
             bool mouseOverLastFrame = IsMouseOver;
 
-            if (GameMouse.Instance.ReadyForRayIntersection)
+            if (InputManager.Instance.ReadyForRayIntersection)
             {
                 // Check collision with our bounds and update the ray intersection flag on the mouse accordingly
                 IsMouseOver = CheckIntersects(mousePosition);
-                GameMouse.Instance.ReadyForRayIntersection = !IsMouseOver;
+                InputManager.Instance.ReadyForRayIntersection = !IsMouseOver;
             }
             else
             {
@@ -146,9 +170,9 @@ namespace CelesteEngine
             IsEntered = IsMouseOver && !mouseOverLastFrame;
             IsExited = !IsMouseOver && mouseOverLastFrame;
 
-            bool mouseClicked = GameMouse.Instance.IsClicked(MouseButton.kLeftButton) ||
-                                GameMouse.Instance.IsClicked(MouseButton.kMiddleButton) ||
-                                GameMouse.Instance.IsClicked(MouseButton.kRightButton);
+            bool mouseClicked = InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, new object[] { MouseButton.kLeftButton }) ||
+                                InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, new object[] { MouseButton.kMiddleButton }) ||
+                                InputManager.Instance.CheckInputEvent(InputManager.ScreenClicked, new object[] { MouseButton.kRightButton });
 
             if (mouseClicked)
             {
@@ -161,9 +185,9 @@ namespace CelesteEngine
             }
 
             // If the mouse is over this and a mouse button is down, the object is pressed
-            if (IsMouseOver && (GameMouse.Instance.IsDown(MouseButton.kLeftButton) ||
-                                GameMouse.Instance.IsDown(MouseButton.kMiddleButton) ||
-                                GameMouse.Instance.IsDown(MouseButton.kRightButton)))
+            if (IsMouseOver && (InputManager.Instance.CheckInputEvent(InputManager.ScreenPressed, new object[] { MouseButton.kLeftButton }) ||
+                                InputManager.Instance.CheckInputEvent(InputManager.ScreenPressed, new object[] { MouseButton.kMiddleButton }) ||
+                                InputManager.Instance.CheckInputEvent(InputManager.ScreenPressed, new object[] { MouseButton.kRightButton })))
             {
                 IsPressed = true;
             }
@@ -176,7 +200,7 @@ namespace CelesteEngine
         /// <summary>
         /// Updates collider positions and collision bools
         /// </summary>
-        public virtual void Update() { }
+        public abstract void Update();
 
         #endregion
     }

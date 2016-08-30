@@ -34,9 +34,14 @@ namespace CelesteEngine
         private List<BaseObject> ObjectsToSort { get; set; }
 
         /// <summary>
-        /// The padding from our border
+        /// The space between the edge of the texture and the elements in the ListControl
         /// </summary>
-        public Vector2 BorderPadding { get; set; }
+        public Vector2 Margin { get; set; }
+
+        /// <summary>
+        /// The space between the Element cell and the object.
+        /// </summary>
+        public Vector2 Padding { get; set; }
 
         /// <summary>
         /// A flag to indicate whether we should scroll the objects in this control
@@ -51,10 +56,10 @@ namespace CelesteEngine
             get
             {
                 return new Rectangle(
-                    (int)(WorldPosition.X - Size.X * 0.5f  + BorderPadding.X),
-                    (int)(WorldPosition.Y - Size.Y * 0.5f + BorderPadding.Y),
-                    (int)(Size.X - 2 * BorderPadding.X),
-                    (int)(Size.Y - 2 * BorderPadding.Y));
+                    (int)(WorldPosition.X - Size.X * 0.5f  + Margin.X),
+                    (int)(WorldPosition.Y - Size.Y * 0.5f + Margin.Y),
+                    (int)(Size.X - 2 * Margin.X),
+                    (int)(Size.Y - 2 * Margin.Y));
             }
         }
 
@@ -64,24 +69,23 @@ namespace CelesteEngine
         private bool NeedsSort { get; set; }
 
         private const float scroll = 0.75f;
-        protected const float verticalPaddingBetweenElements = 15;
 
         #endregion
 
-        public ListControl(Vector2 localPosition, string textureAsset = AssetManager.DefaultEmptyPanelTextureAsset) :
+        public ListControl(Vector2 localPosition, string textureAsset = AssetManager.DefaultEmptyTextureAsset) :
             this(Vector2.Zero, localPosition, textureAsset)
         { 
 
         }
 
-        public ListControl(Vector2 size, Vector2 localPosition, string textureAsset = AssetManager.DefaultEmptyPanelTextureAsset) :
+        public ListControl(Vector2 size, Vector2 localPosition, string textureAsset = AssetManager.DefaultEmptyTextureAsset) :
             base(size, localPosition, textureAsset)
         {
             ObjectsToSort = new List<BaseObject>();
             UseScissorRectangle = true;
-            BorderPadding = new Vector2(float.NegativeInfinity, float.NegativeInfinity);        // Yeah this is probably a mistake
-            UsesCollider = false;
+            Margin = new Vector2(float.NegativeInfinity, float.NegativeInfinity);        // Yeah this is probably a mistake
             ScrollingEnabled = true;
+            Padding = new Vector2(0, 15);
         }
 
         #region Virtual Functions
@@ -95,10 +99,10 @@ namespace CelesteEngine
 
             base.Initialise();
 
-            // Want to only set the border padding if it is unset, but theoretically any value should be valid
-            if (BorderPadding == new Vector2(float.NegativeInfinity, float.NegativeInfinity))
+            // Want to only set the margin if it is unset, but theoretically any value should be valid
+            if (Margin == new Vector2(float.NegativeInfinity, float.NegativeInfinity))
             {
-                BorderPadding = Size * 0.1f;
+                Margin = Size * 0.1f;
             }
         }
 
@@ -125,7 +129,7 @@ namespace CelesteEngine
                     BaseObject first = FirstChild();
                     float firstTopY = first.LocalPosition.Y - first.Size.Y * 0.5f;
 
-                    float yDiff = -Size.Y * 0.5f + verticalPaddingBetweenElements + BorderPadding.Y - firstTopY;
+                    float yDiff = -Size.Y * 0.5f + Padding.Y + Margin.Y - firstTopY;
                     scrollAmount.Y = MathHelper.Clamp(yDiff, 0, scrollAmount.Y);
                 }
                 else
@@ -135,7 +139,7 @@ namespace CelesteEngine
                     float lastBottomY = last.LocalPosition.Y + last.Size.Y * 0.5f;
 
                     // Find minimum difference between the bottom object's bottom and the bottom of our list control as a whole compared with the scroll amount.  
-                    float yDiff = Size.Y * 0.5f - verticalPaddingBetweenElements - BorderPadding.Y - lastBottomY;
+                    float yDiff = Size.Y * 0.5f - Padding.Y - Margin.Y - lastBottomY;
                     scrollAmount.Y = MathHelper.Clamp(yDiff, scrollAmount.Y, 0);
                 }
 
@@ -153,19 +157,6 @@ namespace CelesteEngine
         public override void Update(float elapsedGameTime)
         {
             base.Update(elapsedGameTime);
-
-            // Maybe rebuild when we sort, by swapping positions?
-            /*if (NeedsSort)
-            {
-                foreach (UIObject uiObject in ObjectsToSort)
-                {
-                    Sort(uiObject);
-                    NeedsSort = true;
-                }
-
-                NeedsSort = false;
-                ObjectsToSort.Clear();
-            }*/
 
             // Rebuild after we sort so the elements will be in the correct places
             if (NeedsRebuild)
@@ -218,11 +209,11 @@ namespace CelesteEngine
             {
                 if (previous == null)
                 {
-                    uiObject.LocalPosition = new Vector2(0, -Size.Y * 0.5f + uiObject.Size.Y + BorderPadding.Y + verticalPaddingBetweenElements);
+                    uiObject.LocalPosition = new Vector2(0, -Size.Y * 0.5f + uiObject.Size.Y + Margin.Y + Padding.Y);
                 }
                 else
                 {
-                    uiObject.LocalPosition = previous.LocalPosition + new Vector2(0, uiObject.Size.Y + padding + verticalPaddingBetweenElements);
+                    uiObject.LocalPosition = previous.LocalPosition + new Vector2(0, uiObject.Size.Y + padding + Padding.Y);
                 }
 
                 previous = uiObject;

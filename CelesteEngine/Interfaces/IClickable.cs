@@ -13,6 +13,8 @@ namespace CelesteEngine
         kDisabled,
     }
 
+    public delegate void OnClicked(BaseObject baseObject);
+
     /// <summary>
     /// An interface to describe objects which respond to left, middle and right clicks by the mouse
     /// </summary>

@@ -405,11 +405,11 @@ namespace CelesteEngine
 
                     if (Anchor.HasFlag(Anchor.kLeft))
                     {
-                        LocalPosition -= new Vector2(0.5f * (Parent.Size.X + Depth * Size.X));
+                        LocalPosition -= new Vector2(0.5f * (Parent.Size.X + Depth * Size.X), 0);
                     }
                     else if (Anchor.HasFlag(Anchor.kRight))
                     {
-                        LocalPosition += new Vector2(0.5f * (Parent.Size.X + Depth * Size.Y));
+                        LocalPosition += new Vector2(0.5f * (Parent.Size.X + Depth * Size.Y), 0);
                     }
                 }
             }
@@ -469,17 +469,18 @@ namespace CelesteEngine
         /// <param name="mousePosition"></param>
         public override void HandleInput(float elapsedGameTime, Vector2 mousePosition)
         {
+            // Handle Children's input before this object
+            if (Children.ShouldHandleInput)
+            {
+                Children.HandleInput(elapsedGameTime, mousePosition);
+            }
+
             base.HandleInput(elapsedGameTime, mousePosition);
 
             if (UsesCollider)
             {
                 DebugUtils.AssertNotNull(Collider);
                 Collider.HandleInput(mousePosition);
-            }
-
-            if (Children.ShouldHandleInput)
-            {
-                Children.HandleInput(elapsedGameTime, mousePosition);
             }
 
             if (Modules.ShouldHandleInput)

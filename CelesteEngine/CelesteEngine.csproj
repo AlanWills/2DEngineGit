@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{195F7011-8678-43C2-850E-E2C3C6B88EA9}</ProjectGuid>
+    <ProjectGuid>{B4C3C278-BC1C-49CD-82BF-76B93EF7F59D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CelesteEngine</RootNamespace>
@@ -42,16 +42,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation\AnimatedGameObject.cs" />
-    <Compile Include="Animation\Characters\Character.cs" />
     <Compile Include="Animation\State.cs" />
-    <Compile Include="Animation\StateMachine.cs" />
     <Compile Include="Animation\Transition.cs" />
     <Compile Include="Audio\CustomSoundEffect.cs" />
     <Compile Include="Camera and Input\Camera.cs" />
-    <Compile Include="Camera and Input\GameKeyboard.cs" />
-    <Compile Include="Camera and Input\GameMouse.cs" />
-    <Compile Include="Camera and Input\GameTouchPad.cs" />
-    <Compile Include="Camera and Input\InputHandler.cs" />
+    <Compile Include="Input\GameKeyboard.cs" />
+    <Compile Include="Input\GameMouse.cs" />
+    <Compile Include="Input\GameTouchPanel.cs" />
+    <Compile Include="Input\InputHandler.cs" />
+    <Compile Include="Colliders\CircleCollider.cs" />
     <Compile Include="Colliders\Collider.cs" />
     <Compile Include="Colliders\RectangleCollider.cs" />
     <Compile Include="Commands\CallbackCommand.cs" />
@@ -75,6 +74,7 @@
     <Compile Include="Interfaces\IDamageable.cs" />
     <Compile Include="Interfaces\IFlashing.cs" />
     <Compile Include="Interfaces\IModuleCompatible.cs" />
+    <Compile Include="Interfaces\IPressable.cs" />
     <Compile Include="Iterators\BaseObjectIterator.cs" />
     <Compile Include="Managers\Assets\AssetCollectionManager.cs" />
     <Compile Include="Managers\Assets\AssetManager.cs" />
@@ -90,12 +90,13 @@
     <Compile Include="Modules\Abstract Module Classes\BaseObjectModule.cs" />
     <Compile Include="Modules\Abstract Module Classes\GameObjectModule.cs" />
     <Compile Include="Modules\AnimationModule.cs" />
-    <Compile Include="Modules\ClickableObjectModule.cs" />
-    <Compile Include="Modules\DamageableObjectModule.cs" />
-    <Compile Include="Modules\FlashingObjectModule.cs" />
+    <Compile Include="Modules\Input Modules\ClickableObjectModule.cs" />
+    <Compile Include="Modules\Input Modules\PressableObjectModule.cs" />
+    <Compile Include="Modules\Property Modules\DamageableObjectModule.cs" />
+    <Compile Include="Modules\Property Modules\FlashingObjectModule.cs" />
     <Compile Include="Modules\HighlightOnHoverModule.cs" />
-    <Compile Include="Modules\LifeTimeModule.cs" />
-    <Compile Include="Modules\Module.cs" />
+    <Compile Include="Modules\Property Modules\LifeTimeModule.cs" />
+    <Compile Include="Modules\Abstract Module Classes\Module.cs" />
     <Compile Include="Modules\MoveToDestinationModule.cs" />
     <Compile Include="Modules\RigidBodyModule.cs" />
     <Compile Include="Modules\ToolTipModule.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Threading\CustomThread.cs" />
     <Compile Include="UI\Bar.cs" />
     <Compile Include="UI\Button.cs" />
+    <Compile Include="UI\PressableImage.cs" />
     <Compile Include="UI\ClickableImage.cs" />
     <Compile Include="UI\FlashingLabel.cs" />
     <Compile Include="UI\GridControl.cs" />

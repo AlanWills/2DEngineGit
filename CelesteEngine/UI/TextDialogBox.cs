@@ -146,7 +146,7 @@ namespace CelesteEngine
         {
             float margin = Size.X - 2 * xPadding;
 
-            if (SpriteFont.MeasureString(Text.Text).X > margin)
+            if (Text.SpriteFont.MeasureString(Text.Text).X > margin)
             {
                 string[] tokens = Text.Text.Split(' ');
                 string newString = "";
@@ -154,7 +154,7 @@ namespace CelesteEngine
 
                 foreach (string token in tokens)
                 {
-                    if (SpriteFont.MeasureString(currentLine + token).X < margin)
+                    if (Text.SpriteFont.MeasureString(currentLine + token).X < margin)
                     {
                         if (currentLine != "")
                         {

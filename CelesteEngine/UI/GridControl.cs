@@ -31,16 +31,15 @@ namespace CelesteEngine
         /// <param name="size"></param>
         /// <param name="localPosition"></param>
         /// <param name="textureAsset"></param>
-        public GridControl(int columns, Vector2 size, Vector2 localPosition, string textureAsset = AssetManager.DefaultEmptyPanelTextureAsset) :
+        public GridControl(int columns, Vector2 size, Vector2 localPosition, string textureAsset = AssetManager.DefaultEmptyTextureAsset) :
             base(size, localPosition, textureAsset)
         {
             Columns = columns;
-            UsesCollider = false;
-            BorderPadding = Size * 0.1f;
+            Margin = Size * 0.1f;
 
             // Use the x dimension for both, because we do not know how many rows we are going to have
             // Assume we have square elements and let the image code deal with the rest
-            ElementSize = new Vector2((Size.X - 2 * BorderPadding.X) / Columns);
+            ElementSize = new Vector2((Size.X - 2 * Margin.X) / Columns);
         }
 
         #region Virtual Functions
@@ -50,7 +49,7 @@ namespace CelesteEngine
             if (initialise || uiObjectToAdd.Size == Vector2.Zero)
             {
                 // If we have not called initialise yet or the object has no size, set the ElementSize and let the object use that to scale itself
-                uiObjectToAdd.Size = ElementSize;
+                uiObjectToAdd.Size = ElementSize - 2 * Padding;
             }
             else
             {
@@ -79,7 +78,7 @@ namespace CelesteEngine
 
                 if (previous == null)
                 {
-                    uiObject.LocalPosition = new Vector2((-Size.X + uiObject.Size.X) * 0.5f + BorderPadding.X, (-Size.Y + uiObject.Size.Y) * 0.5f + verticalPaddingBetweenElements + BorderPadding.Y);
+                    uiObject.LocalPosition = new Vector2((-Size.X + ElementSize.X) * 0.5f + Margin.X, (-Size.Y + ElementSize.Y) * 0.5f + Margin.Y);
                 }
                 else
                 {
@@ -88,12 +87,12 @@ namespace CelesteEngine
                     if (column == 0)
                     {
                         // We add to new row in first column
-                        uiObject.LocalPosition = new Vector2((-Size.X + uiObject.Size.X) * 0.5f + BorderPadding.X, previous.LocalPosition.Y + uiObject.Size.Y + verticalPaddingBetweenElements);
+                        uiObject.LocalPosition = new Vector2((-Size.X + ElementSize.X) * 0.5f + Margin.X, previous.LocalPosition.Y + ElementSize.Y);
                     }
                     else
                     {
                         // Add to next column along on same row
-                        uiObject.LocalPosition = previous.LocalPosition + new Vector2(uiObject.Size.X, 0);
+                        uiObject.LocalPosition = previous.LocalPosition + new Vector2(ElementSize.X, 0);
                     }
 
                     // Check we are indeed creating in a different place

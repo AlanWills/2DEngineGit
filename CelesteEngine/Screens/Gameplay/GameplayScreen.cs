@@ -58,7 +58,7 @@ namespace CelesteEngine
         {
             base.Initialise();
 
-            Camera.SetFree(Vector2.Zero);
+            Camera.Instance.SetFree(Vector2.Zero);
         }
 
         /// <summary>

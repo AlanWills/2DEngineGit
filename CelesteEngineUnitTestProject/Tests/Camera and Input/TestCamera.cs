@@ -13,8 +13,8 @@ namespace CelesteEngineCelesteEngineUnitTestGameProject
         {
             Vector2 expectedPosition = new Vector2();
 
-            Camera.FocusOnPosition(new Vector2(500, 500), true);
-            Assert.AreEqual(expectedPosition, Camera.Position);
+            Camera.Instance.FocusOnPosition(new Vector2(500, 500), true);
+            Assert.AreEqual(expectedPosition, Camera.Instance.Position);
         }
 
         // Haven't written code to initialise the camera yet so can't run these tests

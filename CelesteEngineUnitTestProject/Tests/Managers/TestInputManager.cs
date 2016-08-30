@@ -18,7 +18,7 @@ namespace CelesteEngineUnitTestProject
         [TestMethod]
         public void Test_InputManager_AddInputEvent()
         {
-            InputManager.Instance.AddInputEvent("Test Event", InputManager.Empty, InputManager.Empty);
+            InputManager.Instance.AddInputEvent("Test Event", InputManager.EmptyCheck, InputManager.EmptyCheck);
         }
 
         [TestMethod]
@@ -26,7 +26,7 @@ namespace CelesteEngineUnitTestProject
         {
             Trace.Listeners.Clear();
 
-            InputManager.Instance.AddInputEvent("New Test Event", InputManager.Empty, InputManager.Empty);
+            InputManager.Instance.AddInputEvent("New Test Event", InputManager.EmptyCheck, InputManager.EmptyCheck);
             Assert.IsFalse(InputManager.Instance.CheckInputEvent("New Test Event"));
 
             Trace.Refresh();

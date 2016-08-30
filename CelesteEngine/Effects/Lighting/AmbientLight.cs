@@ -9,7 +9,7 @@ namespace CelesteEngine
     public class AmbientLight : Light
     {
         public AmbientLight(Color colour, float intensity = 1, float lifeTime = float.MaxValue) :
-            base(ScreenManager.Instance.ScreenCentre, colour, AssetManager.DefaultEmptyPanelTextureAsset, intensity, lifeTime)
+            base(ScreenManager.Instance.ScreenCentre, colour, AssetManager.DefaultEmptyTextureAsset, intensity, lifeTime)
         {
 
         }

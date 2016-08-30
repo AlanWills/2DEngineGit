@@ -9,7 +9,7 @@ namespace CelesteEngine
     /// This class is a base class for any UI objects in the game.  
     /// It is marked abstract because we do not want to create an instance of this class - it is too generic
     /// </summary>
-    public class UIObject : BaseObject
+    public abstract class UIObject : BaseObject
     {
         #region Properties and Fields
 
@@ -18,24 +18,6 @@ namespace CelesteEngine
         /// Useful for buttons etc.
         /// </summary>
         public object StoredObject { get; set; }
-
-        /// <summary>
-        /// A class specific SpriteFont which can be used to draw text.
-        /// </summary>
-        private SpriteFont spriteFont;
-        protected SpriteFont SpriteFont
-        {
-            get
-            {
-                if (spriteFont == null)
-                {
-                    spriteFont = AssetManager.GetSpriteFont(AssetManager.DefaultSpriteFontAsset);
-                }
-
-                return spriteFont;
-            }
-            set { spriteFont = value; }
-        }
 
         /// <summary>
         /// The rectangle we will use to cut off non-visible sections of our Children
