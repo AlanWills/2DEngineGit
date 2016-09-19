@@ -438,6 +438,19 @@ namespace CelesteEngine
         }
 
         /// <summary>
+        /// Returns the most recent child we added and is buffered to be inserted into ActiveObjects which is castable to the inputted type.
+        /// Shouldn't really be called unless we have children waiting to be added.
+        /// </summary>
+        /// <returns>The most recent child we added</returns>
+        public K LastChildToBeAdded<K>() where K : T
+        {
+            K lastChildOfType = ObjectsToAdd.FindLast(x => x is K) as K;
+            DebugUtils.AssertNotNull(lastChildOfType);
+
+            return lastChildOfType;
+        }
+
+        /// <summary>
         /// Returns the child at the inputted index in our list.
         /// Shouldn't be called unless we have children.
         /// </summary>

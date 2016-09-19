@@ -661,11 +661,10 @@ namespace CelesteEngine
         /// <param name="script"></param>
         /// <param name="load">Calls Load on the command</param>
         /// <param name="initialise">Calls Initialise on the command</param>
-        protected T AddCommand<T>(T script, Command previousCommand = null, bool load = true, bool initialise = true) where T : Command
+        protected T AddCommand<T>(T command, Command previousCommand = null, bool load = true, bool initialise = true) where T : Command
         {
-            script.PreviousCommand = previousCommand;
-            //script.ParentScreen = this;
-            return CommandManager.Instance.AddChild(script, load, initialise);
+            command.PreviousCommand = previousCommand;
+            return CommandManager.Instance.AddChild(command, load, initialise);
         }
 
         #endregion
